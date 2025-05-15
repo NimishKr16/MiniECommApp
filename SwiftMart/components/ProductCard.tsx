@@ -10,7 +10,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 
 const screenWidth = Dimensions.get('window').width;
-const cardWidth = screenWidth / 2 - 24;
+const cardWidth = screenWidth / 2 - 20;
 
 type Product = {
   id: number;
@@ -30,7 +30,7 @@ const ProductCard = ({ product }: Props) => {
   return (
     <TouchableOpacity
       style={styles.card}
-      activeOpacity={0.8}
+      activeOpacity={0.85}
       onPress={() => navigation.navigate('ProductDetail', { product })}
     >
       <Image
@@ -38,11 +38,13 @@ const ProductCard = ({ product }: Props) => {
         style={styles.image}
         resizeMode="contain"
       />
-      <Text style={styles.title} numberOfLines={2}>
-        {product.title}
-      </Text>
-      <Text style={styles.price}>${product.price.toFixed(2)}</Text>
-      <Text style={styles.rating}>⭐ {product.rating.rate}</Text>
+      <View style={styles.infoContainer}>
+        <Text style={styles.title} numberOfLines={2}>
+          {product.title}
+        </Text>
+        <Text style={styles.price}>₹{product.price.toFixed(2)}</Text>
+        <Text style={styles.rating}>★ {product.rating.rate.toFixed(1)}</Text>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -50,36 +52,42 @@ const ProductCard = ({ product }: Props) => {
 const styles = StyleSheet.create({
   card: {
     width: cardWidth,
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 12,
+    backgroundColor: '#ffffff',
+    borderRadius: 20,
     margin: 8,
+    padding: 12,
     shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
+    elevation: 2,
+    borderWidth: 1,
+    borderColor: '#f1f5f9', // light border
   },
   image: {
     width: '100%',
-    height: 100,
-    marginBottom: 10,
+    height: 120,
+    marginBottom: 12,
+    borderRadius: 12,
+    backgroundColor: '#f9fafb',
+  },
+  infoContainer: {
+    gap: 4,
   },
   title: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#333',
-    marginBottom: 4,
+    color: '#1e293b', // slate-800
   },
   price: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#10b981', // emerald
-    marginBottom: 4,
+    color: '#10b981', // emerald-500
   },
   rating: {
-    fontSize: 12,
-    color: '#f59e0b', // amber
+    fontSize: 13,
+    fontWeight: '500',
+    color: '#f59e0b', // amber-500
   },
 });
 
