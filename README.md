@@ -12,7 +12,6 @@
 - 🛍️ Product listing with images, names, and prices
 - ➕ Add to Cart and quantity controls
 - 🧺 Cart screen with item summary and total price
-- 💅 Tailwind-like styling with `nativewind`
 - 🔥 Vector icons via `@expo/vector-icons`
 - 🧭 Navigation powered by `@react-navigation/native`
 - ✅ Easy to extend and customize
