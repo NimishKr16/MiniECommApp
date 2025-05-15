@@ -31,7 +31,7 @@
 
 | Layer        | Library/Framework                     |
 |--------------|----------------------------------------|
-| UI           | React Native, NativeWind (Tailwind CSS)|
+| UI           | React Native,
 | Navigation   | React Navigation                       |
 | Icons        | Expo Vector Icons                      |
 | State        | React `useState`, `useContext`         |
@@ -39,3 +39,5 @@
 | Platform     | Expo SDK 53                            |
 
 ---
+
+## 📲 Android APK is also provided in the repo (master branch)
