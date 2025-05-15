@@ -10,7 +10,6 @@ import {
 import { useNavigation } from '@react-navigation/native';
 
 const screenWidth = Dimensions.get('window').width;
-const cardWidth = screenWidth / 2 - 20;
 
 type Product = {
   id: number;
@@ -24,12 +23,13 @@ type Props = {
   product: Product;
 };
 
-const ProductCard = ({ product }: Props) => {
+const ProductCard =({ product, numColumns = 2 }: Props & { numColumns?: number }) => {
   const navigation = useNavigation<any>();
+  const cardWidth = screenWidth / numColumns - 20;
 
   return (
     <TouchableOpacity
-      style={styles.card}
+        style={[styles.card, { width: cardWidth }]}
       activeOpacity={0.85}
       onPress={() => navigation.navigate('ProductDetail', { product })}
     >
@@ -51,7 +51,6 @@ const ProductCard = ({ product }: Props) => {
 
 const styles = StyleSheet.create({
   card: {
-    width: cardWidth,
     backgroundColor: '#ffffff',
     borderRadius: 20,
     margin: 8,

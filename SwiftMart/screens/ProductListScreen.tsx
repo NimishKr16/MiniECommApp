@@ -6,9 +6,12 @@ import {
   Text,
   StyleSheet,
   SafeAreaView,
+  Dimensions,
+  Platform,
 } from 'react-native';
 import ProductCard from '../components/ProductCard';
 import { useNavigation } from '@react-navigation/native';
+import SearchBar from '../components/SearchBar';
 
 type Product = {
   id: number;
@@ -17,6 +20,20 @@ type Product = {
   price: number;
   rating: { rate: number };
 };
+
+const screenWidth = Dimensions.get('window').width;
+
+const getNumColumns = () => {
+  if (Platform.OS === 'web') {
+    console.log(screenWidth);
+    
+    if (screenWidth > 1400) return 5;
+    if (screenWidth > 1100) return 4;
+    if (screenWidth > 800) return 3;
+  }
+  return 2; // default for mobile
+};
+
 const ProductListScreen = () => {
     const navigation = useNavigation();
   const [products, setProducts] = useState<Product[]>([]);
@@ -49,11 +66,12 @@ const ProductListScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <SearchBar />
       <FlatList
         data={products}
-        renderItem={({ item }) => <ProductCard product={item} />}
+        renderItem={({ item }) => <ProductCard product={item} numColumns={getNumColumns()} />}
         keyExtractor={(item) => item.id.toString()}
-        numColumns={2}
+        numColumns={getNumColumns()}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.flatListContent}
       />
