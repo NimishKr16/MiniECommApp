@@ -8,7 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import Icon from 'react-native-vector-icons/Ionicons';
 const screenWidth = Dimensions.get('window').width;
 
 type Product = {
@@ -45,24 +45,36 @@ const ProductCard =({ product, numColumns = 2 }: Props & { numColumns?: number }
         <Text style={styles.price}>₹{product.price.toFixed(2)}</Text>
         <Text style={styles.rating}>★ {product.rating.rate.toFixed(1)}</Text>
       </View>
+      <TouchableOpacity
+    onPress={() => navigation.navigate('ProductDetail', { product })}
+    style={styles.buyNowButton}
+  >
+    <Icon style={{marginLeft: 10}} name="bag-check" size={20} color="#fff"></Icon>
+    {/* <Icon name="bag-check" size={20} color="#fff" /> */}
+    <Text style={styles.buyNowText}>   Buy Now  </Text>
+  </TouchableOpacity>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#ffffff',
-    borderRadius: 20,
-    margin: 8,
-    padding: 12,
-    shadowColor: '#000',
-    shadowOpacity: 0.06,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 2,
-    borderWidth: 1,
-    borderColor: '#f1f5f9', // light border
-  },
+    card: {
+        backgroundColor: '#ffffff',
+        borderRadius: 20,
+        margin: 8,
+        padding: 12,
+        shadowColor: '#000',
+        shadowOpacity: 0.06,
+        shadowRadius: 8,
+        shadowOffset: { width: 0, height: 4 },
+        elevation: 2,
+        borderWidth: 1,
+        borderColor: '#f1f5f9',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        height: 280,  // fixed height to reserve space for button
+      },
+      
   image: {
     width: '100%',
     height: 120,
@@ -87,6 +99,23 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '500',
     color: '#f59e0b', // amber-500
+  },
+  buyNowButton: {
+    marginTop: 12,
+    backgroundColor: '#09bd9f', // blue-500
+    paddingVertical: 8,
+    borderRadius: 8,
+    alignItems: 'center',
+    flexDirection: 'row',
+    alignSelf: 'center',
+    width: '100%',
+    paddingLeft: 10
+  },
+  
+  buyNowText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 14,
   },
 });
 

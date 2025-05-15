@@ -6,7 +6,7 @@ export default function App() {
   return (
     <CartProvider>
       <AppNavigator />
-      <Toast />
+      <Toast topOffset={120} />
     </CartProvider>
   );
 }

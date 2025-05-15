@@ -12,7 +12,7 @@ import {
 import ProductCard from '../components/ProductCard';
 import { useNavigation } from '@react-navigation/native';
 import SearchBar from '../components/SearchBar';
-
+import FloatingCartButton from '../components/FloatingCartButton';
 type Product = {
   id: number;
   title: string;
@@ -75,6 +75,7 @@ const ProductListScreen = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.flatListContent}
       />
+      <FloatingCartButton />
     </SafeAreaView>
   );
 };

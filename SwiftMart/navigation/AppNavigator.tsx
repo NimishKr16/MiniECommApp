@@ -4,8 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import ProductListScreen from '../screens/ProductListScreen';
 import ProductDetailScreen from '../screens/ProductDetailScreen';
 import CartScreen from '../screens/CartScreen';
-import { TouchableOpacity , View, Text, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { TouchableOpacity , View, Text, StyleSheet, Image } from 'react-native';
+import Feather from '@expo/vector-icons/Feather';
 import { useCart } from '../context/CartContext';
 
 const Stack = createNativeStackNavigator();
@@ -17,27 +17,26 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-          name="Products"
-          component={ProductListScreen}
-          options={({ navigation }) => ({
-            title: 'SwiftMart',
-            headerRight: () => (
-                <TouchableOpacity
-                onPress={() => navigation.navigate('Cart')}
-                style={styles.iconWrapper}
-                activeOpacity={0.7}
-              >
-                <Icon name="cart-outline" size={24} color="#333" />
-                {itemCount > 0 && (
-                  <View style={styles.badge}>
-                    <Text style={styles.badgeText}>{itemCount}</Text>
-                  </View>
-                )}
-              </TouchableOpacity>
-            ),
-          })}
+      <Stack.Screen
+  name="Products"
+  component={ProductListScreen}
+  options={({ navigation }) => ({
+    headerTitle: () => (
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Image
+          source={require('../assets/image.png')}
+          style={{ width: 36, height: 36, marginRight: 8 }}
+          resizeMode="contain"
         />
+        <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#333' }}>
+          SwiftMart
+        </Text>
+      </View>
+    ),
+    
+    headerTitleAlign: 'left', // makes sure title aligns left nicely
+  })}
+/>
         <Stack.Screen
           name="ProductDetail"
           component={ProductDetailScreen}
@@ -75,6 +74,10 @@ const styles = StyleSheet.create({
       fontSize: 10,
       fontWeight: 'bold',
     },
+    logo: {
+        width: 36,
+        height: 36,
+      },
   });
   
 

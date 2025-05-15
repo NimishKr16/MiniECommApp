@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -18,45 +19,59 @@ const CartScreen = () => {
   );
 
   const handleRemove = (id: number) => {
-    Alert.alert('Remove Item', 'Are you sure you want to remove this item?', [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Remove',
-        style: 'destructive',
-        onPress: () => dispatch({ type: 'REMOVE_FROM_CART', productId: id }),
-      },
-    ]);
+    if (Platform.OS === 'web') {
+        const confirm = window.confirm('Are you sure you want to remove this item?');
+        if (confirm) {
+          dispatch({ type: 'REMOVE_FROM_CART', productId: id });
+        }
+      } else {
+        Alert.alert('Remove Item', 'Are you sure you want to remove this item?', [
+            { text: 'Cancel', style: 'cancel' },
+            {
+              text: 'Remove',
+              style: 'destructive',
+              onPress: () => dispatch({ type: 'REMOVE_FROM_CART', productId: id }),
+            },
+          ]);
+      }
+    
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Your Cart</Text>
 
-      <FlatList
-        data={cart.items}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ paddingBottom: 20 }}
-        renderItem={({ item }) => (
-          <View style={styles.itemCard}>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.title} numberOfLines={1}>
-                {item.title}
-              </Text>
-              <Text style={styles.details}>Qty: {item.quantity}</Text>
-              <Text style={styles.price}>
-                ₹{(item.price * item.quantity).toFixed(2)}
-              </Text>
-            </View>
+      {cart.items.length === 0 ? (
+  <View style={styles.emptyContainer}>
+    <Text style={styles.emptyText}>🛒 Your cart is empty</Text>
+  </View>
+) : (
+  <FlatList
+    data={cart.items}
+    keyExtractor={(item) => item.id.toString()}
+    contentContainerStyle={{ paddingBottom: 20 }}
+    renderItem={({ item }) => (
+      <View style={styles.itemCard}>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.title} numberOfLines={1}>
+            {item.title}
+          </Text>
+          <Text style={styles.details}>Qty: {item.quantity}</Text>
+          <Text style={styles.price}>
+            ₹{(item.price * item.quantity).toFixed(2)}
+          </Text>
+        </View>
 
-            <TouchableOpacity
-              onPress={() => handleRemove(item.id)}
-              style={styles.deleteButton}
-            >
-              <Icon name="trash-outline" size={22} color="#ff3b30" />
-            </TouchableOpacity>
-          </View>
-        )}
-      />
+        <TouchableOpacity
+          onPress={() => handleRemove(item.id)}
+          style={styles.deleteButton}
+        >
+          <Icon name="trash-outline" size={22} color="#ff3b30" />
+        </TouchableOpacity>
+      </View>
+    )}
+  />
+)}
 
       <View style={styles.footer}>
         <Text style={styles.total}>Total: ₹{totalPrice.toFixed(2)}</Text>
@@ -138,6 +153,17 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 10,
     alignItems: 'center',
+  },
+  emptyContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    paddingTop: 50,
+  },
+  emptyText: {
+    fontSize: 18,
+    color: '#999',
+    fontWeight: '500',
   },
 });
 

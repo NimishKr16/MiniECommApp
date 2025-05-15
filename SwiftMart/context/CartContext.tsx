@@ -43,7 +43,7 @@ const cartReducer = (state: CartState, action: Action): CartState => {
       Toast.show({
         type: 'success',
         text1: 'Added to Cart',
-        position: 'bottom',
+        position: 'top',
       });
       return { items: [...state.items, { ...action.product, quantity: 1 }] };
 

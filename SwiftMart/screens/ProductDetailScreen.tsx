@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,18 +6,31 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Pressable,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { useCart } from "../context/CartContext";
 import Icon from "react-native-vector-icons/Feather";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Modal from 'react-native-modal';
+import FloatingCartButton from "../components/FloatingCartButton";
 export default function ProductDetailScreen() {
   const route = useRoute();
   const { product } = route.params as { product: any };
   const { cart, dispatch } = useCart();
   const cartItem = cart.items.find((item) => item.id === product.id);
 
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const handleBuyNow = () => {
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
   return (
+    <>
     <ScrollView contentContainerStyle={styles.container}>
       <Image source={{ uri: product.image }} style={styles.image} resizeMode="contain" />
 
@@ -34,7 +47,7 @@ export default function ProductDetailScreen() {
 
         <Text style={styles.description}>{product.description}</Text>
         <View style={styles.buttonGroup}>
-        <TouchableOpacity style={styles.buyNowButton}>
+        <TouchableOpacity style={styles.buyNowButton} onPress={handleBuyNow}>
     <Ionicons name="flash-outline" size={20} color="#fff" style={styles.icon} />
     <Text style={styles.buyNowText}>Buy Now</Text>
   </TouchableOpacity>
@@ -66,7 +79,31 @@ export default function ProductDetailScreen() {
         )}
         </View>
       </View>
+       {/* Order Confirmation Modal */}
+       <Modal
+        isVisible={isModalVisible}
+        onBackdropPress={closeModal}
+        animationIn="zoomIn"
+        animationOut="fadeOut"
+        backdropOpacity={0.5}
+      >
+        <View style={styles.modalCard}>
+          <Icon name="check-circle" size={48} color="#10b981" />
+          <Text style={styles.modalTitle}>Order Confirmed!</Text>
+          <Text style={styles.modalMessage}>
+            Your order will arrive in 3–5 business days.
+          </Text>
+
+          <Pressable style={styles.closeButton} onPress={closeModal}>
+            <Text style={styles.closeText}>OK</Text>
+          </Pressable>
+        </View>
+      </Modal>
+
+
     </ScrollView>
+    <FloatingCartButton />
+    </>
   );
 }
 
@@ -83,7 +120,7 @@ const styles = StyleSheet.create({
       marginBottom: 20,
     },
     details: {
-      marginTop: 10,
+    //   marginTop: 2,
     },
     title: {
       fontSize: 22,
@@ -105,7 +142,7 @@ const styles = StyleSheet.create({
     ratingText: {
       marginLeft: 6,
       fontSize: 14,
-      color: "#6b7280", // gray-500
+      color: "black", // gray-500
     },
     description: {
       fontSize: 15,
@@ -195,6 +232,37 @@ const styles = StyleSheet.create({
         // marginTop: 1,       // space from the content above
         marginBottom: 30,    // moves buttons up from the bottom
         gap: 12,             // space between Buy Now and Add to Cart
+      },
+      modalCard: {
+        backgroundColor: '#fff',
+        borderRadius: 20,
+        padding: 24,
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      modalTitle: {
+        fontSize: 20,
+        fontWeight: '700',
+        marginTop: 12,
+        color: '#1e293b',
+      },
+      modalMessage: {
+        fontSize: 16,
+        color: '#6b7280',
+        textAlign: 'center',
+        marginTop: 8,
+        marginBottom: 20,
+      },
+      closeButton: {
+        backgroundColor: '#10b981',
+        paddingHorizontal: 24,
+        paddingVertical: 10,
+        borderRadius: 8,
+      },
+      closeText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 15,
       },
       
   });
